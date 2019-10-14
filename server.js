@@ -20,7 +20,9 @@ app.use("",routes);
 
 //Start Line messaging
 app.post('/linemessage', (req, res) => {
-	console.log('call linemessage replyToken : '+req.body.events[0].replyToken);
+	console.log('call linemessage.');
+	console.log('req.body : '+ JSON.stringify(req.body));
+	console.log('replyToken : ' +req.body.events[0].replyToken);
     let reply_token = req.body.events[0].replyToken;
     reply(reply_token);
     res.sendStatus(200);
