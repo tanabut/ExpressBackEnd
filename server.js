@@ -19,7 +19,7 @@ app.get('/message', (req, res) =>{
 app.use("",routes);
 
 //Start Line messaging
-app.post('/linemessage', (req, res) => {
+app.post('/webhook', (req, res) => {
 	console.log('call linemessage.');
 	console.log('req.body : '+ JSON.stringify(req.body));
 	console.log('replyToken : ' +req.body.events[0].replyToken);
