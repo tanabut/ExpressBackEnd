@@ -18,40 +18,38 @@ app.get('/message', (req, res) =>{
 
 app.use("",routes);
 
-app.get('/fiderestaurants', function(req,res){
-	//PARAMETERS FOR SEARCH QUERY FOR RESTAURANTS, OPEN NOW
-	const baseurl = 'https://maps.googleapis.com/maps/api/place/textsearch/json?';
-	const location = 'location=13.8199823,100.5163674';
-    const address = 'address=10800,Bang+Sue,%u0E1A%u0E32%u0E07%u0E0B%u0E37%u0E48%u0E2D';
-	const type = 'type=restaurant';
-	const opennow = 'opennow=true';
-	const key = 'key=AIzaSyChQcT0j5iBDFgLhYlYPPjPuwaIAWz7-vs';
-	
-    const queryurl = `${baseurl}${location}&${address}&${type}&${opennow}&${key}`;
-
-	//SEARCH QUERY TO GOOGLE PLACES API, USING REQUEST MODULE
-	request({
-		uri: queryurl,
-		method: "GET",
-		timeout: 10000,
-		followRedirect: true,
-		maxRedireccts: 10
-		}, function(err, response, body) {
-			var allresults = [];
-			if(err){
-                console.log(err);
-                ReturnMessage.Status = "Error";
-                ReturnMessage.Message = err.message;
-                res.status(500).json(ReturnMessage);
-			} else {
-				var responseparsed = JSON.parse(body);
-				var results = responseparsed.results;
-                allresults = [...results];
-                res.json(allresults);
-			}
-		}
-	)
+//Start Line messaging
+app.post('/linemessage', (req, res) => {
+    let reply_token = req.body.events[0].replyToken
+    reply(reply_token)
+    res.sendStatus(200)
 });
+
+function reply(reply_token) {
+    let headers = {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer {C98kmiuJHOzhfsd/qUUisSIwi21AFuNquRwbqGK5U7uvOtS0kZAMDkwq9KRgc2gC47lEf/WEbY0dC94LIfHQDSB7I8mJLuZpHrOGFZudujWGdiEEN1McYAaze7BBPCggEK64+U1gWtsLbXyT38yZhwdB04t89/1O/w1cDnyilFU=}'
+    }
+    let body = JSON.stringify({
+        replyToken: reply_token,
+        messages: [{
+            type: 'text',
+            text: 'Hello'
+        },
+        {
+            type: 'text',
+            text: 'How are you?'
+        }]
+    })
+    request.post({
+        url: 'https://api.line.me/v2/bot/message/reply',
+        headers: headers,
+        body: body
+    }, (err, res, body) => {
+        console.log('status = ' + res.statusCode);
+    });
+};
+//End Line messaging
 
 // port (as described above) and host are both wrong
 //const host = 'localhost';
