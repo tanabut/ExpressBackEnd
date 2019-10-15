@@ -18,14 +18,14 @@ app.get('/message', (req, res) =>{
 
 app.use("",routes);
 
-app.post('/menumessage', (req, res) => {
+app.post('/onedirection', (req, res) => {
     console.log('call menumessage.');
     const message = "Test send message.";
-    push(message);
+    onedirection(message);
     res.sendStatus(200);
 });
 
-function push(msg) {
+function onedirection(msg) {
     let headers = {
         'Content-Type': 'application/json',
         'Authorization': 'Bearer {C98kmiuJHOzhfsd/qUUisSIwi21AFuNquRwbqGK5U7uvOtS0kZAMDkwq9KRgc2gC47lEf/WEbY0dC94LIfHQDSB7I8mJLuZpHrOGFZudujWGdiEEN1McYAaze7BBPCggEK64+U1gWtsLbXyT38yZhwdB04t89/1O/w1cDnyilFU=}'
@@ -41,6 +41,36 @@ function push(msg) {
       })
     request.post({
         url: 'https://api.line.me/v2/bot/message/push',
+        headers: headers,
+        body: body
+    }, (err, res, body) => {
+        console.log('status = ' + res.statusCode);
+    });
+};
+
+app.post('/multidirection', (req, res) => {
+    console.log('call multidirection.');
+    const message = "Test send multi message.";
+    multidirection(message);
+    res.sendStatus(200);
+});
+
+function multidirection(msg) {
+    let headers = {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer {C98kmiuJHOzhfsd/qUUisSIwi21AFuNquRwbqGK5U7uvOtS0kZAMDkwq9KRgc2gC47lEf/WEbY0dC94LIfHQDSB7I8mJLuZpHrOGFZudujWGdiEEN1McYAaze7BBPCggEK64+U1gWtsLbXyT38yZhwdB04t89/1O/w1cDnyilFU=}'
+    }
+    let body = JSON.stringify({
+        to: [`U68f840080796f57dfff287697c2926c0`],
+        messages: [
+          {
+            type: `text`,
+            text: msg
+          }
+        ]
+      })
+    request.post({
+        url: 'https://api.line.me/v2/bot/message/multicast',
         headers: headers,
         body: body
     }, (err, res, body) => {
