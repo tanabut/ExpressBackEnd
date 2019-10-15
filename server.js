@@ -30,7 +30,10 @@ app.post('/webhook', (req, res) => {
 	console.log('req.body : '+ JSON.stringify(req.body));
 	console.log('replyToken : ' +req.body.events[0].replyToken);
     let reply_token = req.body.events[0].replyToken;
-    //reply(reply_token);
+    const sendmessage = req.body.send;
+    if(sendmessage){
+        reply(reply_token);
+    }
     res.sendStatus(200);
 });
 
@@ -60,16 +63,12 @@ function reply(reply_token) {
 };
 //End Line messaging
 
-// port (as described above) and host are both wrong
-//const host = 'localhost';
-//const port = 3000;
-
 // use alternate localhost and the port Heroku assigns to $PORT
 const host = '0.0.0.0';
 const port = process.env.PORT || 3000;
 
 app.listen(port, host, function() {
-	console.log("Server started.......");
+	console.log("Server started PORT : "+port);
 });
 
 
