@@ -18,22 +18,13 @@ app.get('/message', (req, res) =>{
 
 app.use("",routes);
 
-app.post('/menumessaging', (req, res) => {
-    const {replyToken} = req.body;
-    reply(replyToken);
-    res.status(201).json(req.body);
-});
-
 //Start Line messaging
 app.post('/webhook', (req, res) => {
 	console.log('call linemessage.');
 	console.log('req.body : '+ JSON.stringify(req.body));
 	console.log('replyToken : ' +req.body.events[0].replyToken);
     let reply_token = req.body.events[0].replyToken;
-    const sendmessage = req.body.send;
-    if(sendmessage){
-        reply(reply_token);
-    }
+    reply(reply_token);
     res.sendStatus(200);
 });
 
