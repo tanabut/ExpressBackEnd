@@ -1,12 +1,14 @@
 const express = require('express');
 
-const { sequencenumber, placeapi } = require('../controllers');
+const { sequencenumber, placeapi, linemessapi } = require('../controllers');
 
 const router = express.Router();
 
 router.get('/', (req, res) => { console.log('API is working.'); res.status(200).send('API is working.');});
-router.get('/sequences', sequencenumber.getresults);
+router.post('/sequences', sequencenumber.getresults);
 router.get('/SCG', placeapi.fiderestaurants);
-//router.post('/linemessage', (req, res) => res.sendStatus(200))
+router.post('/webhook', linemessapi.webhook);
+router.post('/onedirection', linemessapi.onedirection);
+router.post('/multidirection', linemessapi.multidirection);
 
 module.exports = router;

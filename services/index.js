@@ -1,5 +1,6 @@
-const blogService = require('./blog-post.service')
+const blogService = require('./blog-post.service');
+const lineService = require('./linemessage.service')
 
 module.exports = {
-  blogService
+  lineService
 }
