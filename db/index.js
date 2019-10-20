@@ -1,7 +1,9 @@
-const { insertMessage } = require('./messages.db');
+const { insertMessage, selectListMessages, selectMessageByUserid } = require('./messages.db');
 const { insertUser } = require('./users.db');
 
 module.exports = {
   insertMessage,
-  insertUser
+  insertUser,
+  selectListMessages,
+  selectMessageByUserid
 }

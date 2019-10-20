@@ -17,8 +17,6 @@ const webhook = (req, res) => {
                 console.log(user.displayName);
                 lineService.createUser(user);
             });
-            //const db_message = new DBMessage(0, req.body.events[0].type, new Date(req.body.events[0].timestamp), req.body.events[0].source.userId, req.body.events[0].message.text);
-            //lineService.createUser(db_message);
         }
 
         if(db_message.type === "message"){
@@ -41,8 +39,12 @@ const webhook = (req, res) => {
 const onedirection = (req, res) => {
     try {
         console.log('bot send a message to one direction.');
+        const type = "answer";
         const _req_msg = req.body.message;
         const _user = req.body.user;
+
+        const db_message = new DBMessage(0, type, new Date(), _user, _req_msg);
+        lineService.createMessage(db_message);
 
         const _headers = new head(token);
         let _msgarr = [];
@@ -62,7 +64,9 @@ const onedirection = (req, res) => {
         }, (err, res, body) => {
             console.log('status = ' + res.statusCode);
         });
-        res.sendStatus(200);
+
+        ReturnMessage.Status = "Success";
+        res.status(201).json(ReturnMessage);
     } catch (e) {
         console.log(e.message);
         ReturnMessage.Status = "Error";
@@ -71,35 +75,23 @@ const onedirection = (req, res) => {
     }
 };
 
-const multidirection = (req, res) => {
+const getlastmsgofeachuser = async (req, res) => {
     try {
-        console.log('bot send a message to one direction.');
-        const _req_msg = req.body.message;
-        const _user = req.body.user;
+        return await lineService.getlastmsgofeachuser(res);
+         
+    } catch (e) {
+        console.log(e.message);
+        ReturnMessage.Status = "Error";
+        ReturnMessage.Message = e.message;
+        res.status(500).json(ReturnMessage);
+    }
+};
 
-        const _headers = new head(token);
-        let _msgarr = [];
-        if (Array.isArray(_req_msg)) {
-            _req_msg.forEach(req_msg => {
-                _msgarr.push(new message("text", req_msg));
-            });
-        } else {
-            _msgarr.push(new message("text", _req_msg));
-        }
-        const _body = JSON.stringify(new body(_user, _msgarr));
 
-        console.log('headers : ' + JSON.stringify(_headers));
-        console.log('message : ' + _msgarr);
-        console.log('body : ' + _body);
-
-        request.post({
-            url: 'https://api.line.me/v2/bot/message/multicast',
-            headers: _headers,
-            body: _body
-        }, (err, res, body) => {
-            console.log('status = ' + res.statusCode);
-        });
-        res.sendStatus(200);
+const getmsgbyuser = async (req, res) => {
+    try {
+        const userid = req.body.userid;
+        return await lineService.getmsgbyuser(res, userid);
     } catch (e) {
         console.log(e.message);
         ReturnMessage.Status = "Error";
@@ -111,5 +103,6 @@ const multidirection = (req, res) => {
 module.exports = {
     webhook,
     onedirection,
-    multidirection
+    getlastmsgofeachuser,
+    getmsgbyuser
 }

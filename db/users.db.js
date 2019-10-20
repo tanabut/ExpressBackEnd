@@ -1,16 +1,6 @@
-const { config } = require('./config');
-const Connection = require('tedious').Connection;
+const { connection } = require('./connection');
 var Request = require('tedious').Request
 var TYPES = require('tedious').TYPES;
-
-var connection = new Connection(config);
-connection.on('connect', function (err) {
-    if (err){
-        return console.error(err);
-    }
-    // If no error, then good to proceed.  
-    console.log("Connected");
-});
 
 const insertUser = (user) => {
     request = new Request("INSERT Users (userid, username, image) OUTPUT INSERTED.userid VALUES (@Userid, @Username, @Image);", function (err) {

@@ -8,10 +8,9 @@ const fiderestaurants = (req, res) => {
 	const location = 'location=13.8199823,100.5163674';
     const address = 'address=10800,Bang+Sue,%u0E1A%u0E32%u0E07%u0E0B%u0E37%u0E48%u0E2D';
 	const type = 'type=restaurant';
-	const opennow = 'opennow=true';
 	const key = 'key=AIzaSyChQcT0j5iBDFgLhYlYPPjPuwaIAWz7-vs';
 	
-    const queryurl = `${baseurl}${location}&${address}&${type}&${opennow}&${key}`;
+    const queryurl = `${baseurl}${location}&${address}&${type}&${key}`;
 
 	//SEARCH QUERY TO GOOGLE PLACES API, USING REQUEST MODULE
 	request({

@@ -9,6 +9,7 @@ router.post('/sequences', sequencenumber.getresults);
 router.get('/SCG', placeapi.fiderestaurants);
 router.post('/webhook', linemessapi.webhook);
 router.post('/onedirection', linemessapi.onedirection);
-router.post('/multidirection', linemessapi.multidirection);
+router.get('/getlastmsgofeachuser', linemessapi.getlastmsgofeachuser);
+router.post('/getmsgbyuser', linemessapi.getmsgbyuser);
 
 module.exports = router;

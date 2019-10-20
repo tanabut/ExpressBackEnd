@@ -1,6 +1,5 @@
-const { insertMessage, insertUser, blogpostDb } = require('../db');
+const { insertMessage, selectListMessages, selectMessageByUserid, insertUser, blogpostDb } = require('../db');
 const line = require('@line/bot-sdk');
-const request = require('request');
 let { DBUser } = require('../models');
 
 const client = new line.Client({
@@ -49,17 +48,22 @@ const getUserProfile = async (userid) => {
           // error handling
           console.log(err);
         });
+    } catch (e) {
+        throw new Error(e.message)
+    }
+}
 
-        /*const url = `https://api.line.me/v2/bot/profile/${userid}`
-        return await request.post({
-            url: url,
-            headers: _headers,
-            body: _body
-        }, (err, res, body) => {
-            console.log('status = ' + res.statusCode);
-            return body;
-        });*/
-        //return await insertMessage(db_message)
+const getlastmsgofeachuser = async (res) => {
+    try {
+        return await selectListMessages(res);
+    } catch (e) {
+        throw new Error(e.message)
+    }
+}
+
+const getmsgbyuser = async (res, userid) => {
+    try {
+        return await selectMessageByUserid(res, userid);
     } catch (e) {
         throw new Error(e.message)
     }
@@ -70,5 +74,7 @@ module.exports = {
     multiCastMessage,
     createUser,
     createMessage,
-    getUserProfile
+    getUserProfile,
+    getlastmsgofeachuser,
+    getmsgbyuser
 }
