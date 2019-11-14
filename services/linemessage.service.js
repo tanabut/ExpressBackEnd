@@ -1,4 +1,4 @@
-const { insertMessage, selectListMessages, selectMessageByUserid, insertUser, blogpostDb } = require('../db');
+const { insertMessage, selectListMessages, selectMessageByUserid, insertUser } = require('../db');
 const line = require('@line/bot-sdk');
 let { DBUser } = require('../models');
 
@@ -6,21 +6,6 @@ const client = new line.Client({
     channelAccessToken: 'C98kmiuJHOzhfsd/qUUisSIwi21AFuNquRwbqGK5U7uvOtS0kZAMDkwq9KRgc2gC47lEf/WEbY0dC94LIfHQDSB7I8mJLuZpHrOGFZudujWGdiEEN1McYAaze7BBPCggEK64+U1gWtsLbXyT38yZhwdB04t89/1O/w1cDnyilFU='
 });
 
-const pushMessage = async (user, content) => {
-    try {
-        return await blogpostDb(user, content)
-    } catch (e) {
-        throw new Error(e.message)
-    }
-}
-
-const multiCastMessage = async (user, content) => {
-    try {
-        return await blogpostDb(user, content)
-    } catch (e) {
-        throw new Error(e.message)
-    }
-}
 
 const createUser = async (user) => {
     try {
