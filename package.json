@@ -18,7 +18,7 @@
     "express-bearer-token": "^2.4.0",
     "mathjs": "^6.2.3",
     "request": "^2.88.0",
-    "socket.io": "^1.7.4",
+    "socket.io": "^4.5.3",
     "tedious": "^6.4.0"
   },
   "devDependencies": {
